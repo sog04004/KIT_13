@@ -15,14 +15,20 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand" href="/">내 사이트</a>
   <ul class="navbar-nav">
+    {% if 'user' in session %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('logout') }}">로그아웃</a> 
+    </li>
+    {% else %}
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('login') }}">로그인</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('getinfo') }}">학생정보</a>
-    </li>
+    </li> 
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('join') }}">회원가입</a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('getinfo') }}">학생정보</a>
     </li>
   </ul>
 </nav>

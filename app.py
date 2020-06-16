@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = b'aaa!111/'
 
 @app.route('/')
-def index():
+def main():
     return render_template('main.html')
     
 # 로그인
@@ -19,12 +19,12 @@ def login():
         pw = request.form['pw']
         ret = dbdb.select_user(id, pw)
         if ret != None:
-            return "안녕하세요~ {} 님".format(id)
-            #return '''
-            #    <script> alert("안녕하세요~ {}님");
-            #    location.href="/form"
-            #    </script>
-            #'''.format(id)
+            session['user'] = id
+            return '''
+                <script> alert("안녕하세요~ {}님");
+                location.href="/"
+                </script>
+                '''.format(id)
         else:
             return "아이디 또는 패스워드를 확인 하세요."
 
@@ -32,14 +32,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return redirect(url_for('form'))
-    
-# 로그인 사용자만 접근 가능으로 만들면
-@app.route('/form') 
-def form():
-    if 'user' in session:
-        return render_template('test.html')
-    return redirect(url_for('login'))
+    return redirect(url_for('main'))
 
 # 회원 가입
 @app.route('/join', methods=['GET', 'POST'])
@@ -62,10 +55,17 @@ def join():
         dbdb.insert_user(id, pw, name)
         return redirect(url_for('login'))
 
+#로그인 사용자만 이용 가능 (학생정보)
 @app.route('/getinfo')
 def getinfo():
-    ret = dbdb.select_all()
-    return render_template('getinfo.html', data=ret)
+    if 'user' in session:
+        ret = dbdb.select_all()
+        return render_template('getinfo.html', data=ret)
+    return '''
+        <script> alert("로그인 후에 이용 가능합니다");
+        location.href="/login"
+        </script>
+        '''
 
 if __name__ == '__main__':
     app.run(debug=True)

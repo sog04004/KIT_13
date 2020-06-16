@@ -5,17 +5,11 @@
 {% endblock %}
 {% block content %}
 <h2>KIT 로그인</h2>
-
 <form action="/login" method="POST">
  <label for="fname">아이디:</label><br>
  <input type="text" id="fname" name="id"><br>
  <label for="lname">패스워드:</label><br>
  <input type="password" id="lname" name="pw"><br><br>
  <input type="submit" value="확인"><br><br>
-</form>
-
-<form action="/join" method="GET">
- <a>아직 아이디가 없으신가요? <a>
- <input type="submit" value="회원가입">
 </form>
 {% endblock %}
